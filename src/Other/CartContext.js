@@ -60,12 +60,8 @@ const cartReducer = (state, action) => {
 };
 
 const CartContextProvider = (props) => {
-    const [cartState, dispatchCart] = useReducer(cartReducer, {'cart': {
-        "toast": {"price": 11.99, "qty": 3},
-        "milk": {"price": 10, "qty": 3}
-
-    }, 'totalNumItems': 10, "totalPrice": 100.00});
-
+    const [cartState, dispatchCart] = useReducer(cartReducer, {'cart': {}, 'totalNumItems': 0, "totalPrice": 0});
+    
     return(
         <CartContext.Provider
             value={{

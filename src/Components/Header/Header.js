@@ -1,8 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import { CartContext } from '../../Other/CartContext';
 import { Navbar } from './Navbar';
-import backgroudImage from '../Assests/background-image.jpeg'
+import backgroudImage from '../../Assests/background-image.jpeg';
 import styles from './Header.module.css'
 
 export function Header(){

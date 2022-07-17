@@ -6,17 +6,17 @@ function App() {
   const cartCtx = useContext(CartContext);
 
   const incrementHandler = () =>{
+
     cartCtx.dispatchCart(
       {
-        'type': 'MODIFY_CART',
+        'type': 'ADD_ONE_ITEM',
         payload: {
-          'itemName': 'Milk',
-          'price': 12,
-          'qty': 4
+          'itemName': 'milk'
 
         }
       }
     );
+    console.log(cartCtx);
   };
 
   return (
@@ -24,7 +24,7 @@ function App() {
       <Header/>
       <p>{JSON.stringify(cartCtx.cart)}</p>
       <p>{JSON.stringify(cartCtx.totalNumItems)}</p>
-      <p>loredfkmds dfk f kf dlv mfk ldms kljflksdkmf lgkmfs kdsml nkn fvkn vkn kv fv nmdv lkvn</p>
+      <p>{JSON.stringify(cartCtx.totalPrice)}</p>
       <button>DECREMENT BY ONE</button>
       <button onClick={incrementHandler} >INCREMENT BY ONE</button>
     </>

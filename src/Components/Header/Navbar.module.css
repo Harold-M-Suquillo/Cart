@@ -1,5 +1,5 @@
 #navbar-main-container{
-    z-index: 100;
+    z-index: 1;
     background-color: #8a2b06;
     height: 5rem;
     width: 100%;
@@ -69,5 +69,4 @@
     #btn-content-container > svg{
         margin-right: .5rem;
     }
-
-  }
+}
