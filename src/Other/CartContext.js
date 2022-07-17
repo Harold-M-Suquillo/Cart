@@ -3,6 +3,7 @@ const CartContext = React.createContext(
     {
         'cart': {},
         'totalNumItems': 0,
+        'totalPrice': 0.00,
         'dispatchCart': () => {}
     }
 );
@@ -11,56 +12,66 @@ const cartReducer = (state, action) => {
     const item = action.payload.itemName;
     switch(action.type){
         case 'MODIFY_CART':
-            // Check if in the cart
             if (item in state.cart){
-                // Check if we it to be 0 - Remove
-                if (action.payload.qty === 0){
+                // 0 items -> Remove
+                if (action.payload.qty === 0){ // DONE
+                    const updatedTotalPrice = state.totalPrice - (state.cart[item].price * state.cart[item].qty);
                     const NewCart = {...state.cart};
                     delete NewCart[item];
-                    return {'cart': NewCart, 'totalNumItems': state.totalNumItems - state.cart[item].qty};
+                    return {'cart': NewCart, 'totalNumItems': state.totalNumItems - state.cart[item].qty, 'totalPrice': updatedTotalPrice};
                 }
                 // Modify the old value with the new value
-                else{
+                else{ // DONE
+                    const updatedTotalPrice = state.totalPrice + ((action.payload.qty - state.cart[item].qty) * action.payload.price);
                     const updatedItem = {"price": state.cart[item].price, "qty": action.payload.qty};
-                    const updatedTotalItems = state.totalNumItems - state.cart[item].qty + action.payload.qty;
-                    return {'cart': {...state.cart, [item]: updatedItem}, 'totalNumItems': updatedTotalItems}
+                    const updatedTotalItems = state.totalNumItems +  (action.payload.qty - state.cart[item].qty);
+                    return {'cart': {...state.cart, [item]: updatedItem}, 'totalNumItems': updatedTotalItems, 'totalPrice': updatedTotalPrice};
                 }
             }
-            // Add to cart if not in the cart
-            else{
+            // Item not in cart -> add it updatedItem
+            else{ // DONE
+                const updatedTotalPrice = (action.payload.price * action.payload.qty) + state.totalPrice;
                 const newItem = {"price": action.payload.price, "qty": action.payload.qty}
                 const updatedTotalItems = state.totalNumItems + action.payload.qty;
-                return {'cart': {...state.cart, [item]: newItem}, 'totalNumItems': updatedTotalItems};
+                return {'cart': {...state.cart, [item]: newItem}, 'totalNumItems': updatedTotalItems, 'totalPrice': updatedTotalPrice};
             }
         case 'REMOVE_ONE_ITEM':
             // At least 1 is already in cart
             if (state.cart[item].qty > 1){
+                const updatedTotalPrice = state.totalPrice - state.cart[item].price;
                 const updatedItem = {"price": state.cart[item].price, "qty": state.cart[item].qty - 1};
-                return {'cart': {...state.cart, [item]: updatedItem}, 'totalNumItems': state.totalNumItems - 1};
+                return {'cart': {...state.cart, [item]: updatedItem}, 'totalNumItems': state.totalNumItems - 1, 'totalPrice': updatedTotalPrice};
             }
-            // Remove from cart (0 items)
+            // Last item in cart -> remove it
             else{
+                const updatedTotalPrice = state.totalPrice - state.cart[item].price;
                 const NewCart = {...state.cart};
                 delete NewCart[item]; 
-                return {'cart': NewCart, 'totalNumItems': state.totalNumItems - 1};
+                return {'cart': NewCart, 'totalNumItems': state.totalNumItems - 1, 'totalPrice': updatedTotalPrice};
             }
         case 'ADD_ONE_ITEM':
             // At least 1 is already in cart
+            const updatedTotalPrice = state.totalPrice + state.cart[item].price;
             const updatedItem = {"price": state.cart[item].price, "qty": state.cart[item].qty + 1};
-            return {'cart': {...state.cart, [item]: updatedItem}, 'totalNumItems': state.totalNumItems + 1};
+            return {'cart': {...state.cart, [item]: updatedItem}, 'totalNumItems': state.totalNumItems + 1, 'totalPrice': updatedTotalPrice};
         default:
             return state;
     }
 };
 
 const CartContextProvider = (props) => {
-    const [cartState, dispatchCart] = useReducer(cartReducer, {"cart": {}, "totalNumItems": 0,});
+    const [cartState, dispatchCart] = useReducer(cartReducer, {'cart': {
+        "toast": {"price": 11.99, "qty": 3},
+        "milk": {"price": 10, "qty": 3}
+
+    }, 'totalNumItems': 10, "totalPrice": 100.00});
 
     return(
         <CartContext.Provider
             value={{
                 'cart': cartState.cart,
                 'totalNumItems': cartState.totalNumItems,
+                'totalPrice': cartState.totalPrice,
                 'dispatchCart': dispatchCart
             }}
         >
@@ -101,7 +112,8 @@ export {CartContext, cartReducer, CartContextProvider};
 //          "ITEMNAME": {"price": 123, "qty": 12323},
 //          "ITEMNAME": {"price": 123, "qty": 12323}
 //      },
-//      "totalItemsInCart": 112
+//      "totalItemsInCart": 112,
+//      "amountTotal": 122.234
 //  }
 //
 //
