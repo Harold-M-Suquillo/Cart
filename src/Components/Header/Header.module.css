@@ -1,0 +1,45 @@
+#img-container{
+    object-fit: cover;
+
+    height: 15rem;
+}
+
+#background-img{
+    width: 100%;
+    object-fit: cover;
+    height: 15rem;
+
+}
+
+#info-container{
+    width: min(45rem, 95%);
+    min-height: 11rem;
+    height: min(15rem, 60%);
+    margin-top: -8rem;
+    left: 0; 
+    right: 0; 
+    margin-left: auto; 
+    margin-right: auto; 
+    color: white;
+    background-color: #2f2f2f;
+    box-shadow: 0 1px 18px 10px rgb(0 0 0 / 25%);
+    position: relative;
+    text-align: center;
+    border-radius: 1rem;
+}
+#info-container > p,
+#info-container > h2{
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+#info-container > h2{
+    font-size: 1.7rem;
+}
+#info-container > p + p{
+    padding-bottom: 2rem;
+}
+#info-container > p{
+    width: 97%;
+    margin: 0 auto;
+    font-size: 1.05rem;
+}

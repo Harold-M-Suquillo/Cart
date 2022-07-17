@@ -13,8 +13,6 @@ const cartReducer = (state, action) => {
         case 'MODIFY_CART':
             // Check if in the cart
             if (item in state.cart){
-                console.log("item in cart");
-
                 // Check if we it to be 0 - Remove
                 if (action.payload.qty === 0){
                     const NewCart = {...state.cart};
