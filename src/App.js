@@ -1,25 +1,33 @@
-import logo from './logo.svg';
+import React, { useContext} from 'react';
 import './App.css';
+import { CartContext } from './Other/CartContext';
 
 function App() {
+  const cartCtx = useContext(CartContext);
+
+  const incrementHandler = () =>{
+    cartCtx.dispatchCart(
+      {
+        'type': 'MODIFY_CART',
+        payload: {
+          'itemName': 'Milk',
+          'price': 12,
+          'qty': 2
+
+        }
+      }
+    );
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <p>{JSON.stringify(cartCtx.cart)}</p>
+      <p>{JSON.stringify(cartCtx.totalNumItems)}</p>
+      <button>DECREMENT BY ONE</button>
+      <button onClick={incrementHandler} >INCREMENT BY ONE</button>
     </div>
   );
 }
 
 export default App;
+
