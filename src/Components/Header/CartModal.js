@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { CartContext } from '../../Other/CartContext';
 import ReactDOM from 'react-dom';
 import styles from './CartModal.module.css';
+import { ModalItem } from './ModalItem';
 
 export function Backdrop(props){
     return(
@@ -14,14 +15,21 @@ export function CartModalOverlay(props){
     
     const orderHandler = () => {
         console.log("ORDERING.....");
+        console.log(cartCtx.cart);
+        
     }
 
     return(
         <div id={styles.modal} >
+
+
             <div id={styles['inner-container']}>
+                {Object.keys(cartCtx.cart).map( key => {
+                    return <ModalItem name={key} qty={cartCtx.cart[key].qty} price={cartCtx.cart[key].price}/>
+                })}
                 <header id={styles['total-amount']}>
                     <h2>Total Amount</h2>
-                    <h2>${cartCtx.totalPrice.toFixed(2)}</h2>
+                    <h2>${Math.abs(cartCtx.totalPrice).toFixed(2)}</h2>
                 </header>
                 <footer>
                     <button id={styles['btn-order']} className={styles['btn-style']} onClick={orderHandler}>Order</button>
